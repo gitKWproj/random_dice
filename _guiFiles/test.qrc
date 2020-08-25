@@ -1,0 +1,8 @@
+<RCC>
+  <qresource prefix="newPrefix">
+    <file>player1.png</file>
+  </qresource>
+  <qresource prefix="newPrefix2">
+    <file>player1_resize.png</file>
+  </qresource>
+</RCC>
