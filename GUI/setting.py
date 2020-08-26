@@ -1,7 +1,7 @@
 import sys
 from PyQt5.QtWidgets import *
-from mymodify.GUI.play import MainDialog
-from mymodify.dice.game import Game
+from GUI.play import MainDialog
+from dice.game import Game
 
 
 # 두번째 윈도우창 인원 수, 생명 설정창.

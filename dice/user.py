@@ -11,12 +11,13 @@ class User:
     def dice(self, game, count, idx):
 # 주사위 돌리기
         result = randint(1, 6)
-        print(result)
+        # print(result)
 # 땅 위치 값 계산 후 이동
         self.land_idx += result
-# 한바퀴 돌았을 시 idx값 조정
+# 한바퀴 돌았을 시 idx값 조정, life +1
         if self.land_idx > 17:
             self.land_idx -= len(game.land[idx])
+            self.life += 1
 # 주사위 값 반환
         return result
 '''

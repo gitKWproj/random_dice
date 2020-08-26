@@ -1,4 +1,4 @@
-from mymodify.dice.user import User
+from dice.user import User
 from random import randint
 
 
@@ -9,9 +9,10 @@ class Game:
         self.map_size = 18
         # self.users 에 User 객체가 들어가 있다.
         self.users = []
-        self.land = []
+        self.total_land = []
         for i in range(self.map_size):
-            self.land.append("")
+            self.total_land.append("")
+        #users[0] 과 users[1] 의 이미지 위치값
         self.land = [
             [(610, 470, 40, 40), (510, 470, 40, 40), (410, 470, 40, 40), (310, 470, 40, 40), (210, 470, 40, 40),
             (110, 470, 40, 40),
@@ -26,10 +27,25 @@ class Game:
             (650, 210, 40, 40), (650, 310, 40, 40), (650, 410, 40, 40)]
         ]
 
-    # 선공 정하기 함수
-    def toss_coin(self):
-        result = randint(0, 1)
-        return result
+
+    def input_name(self, user_name1, user_name2):
+        # User 닉네임 입력
+        self.users.append(User(user_name1, self.start_life))
+        self.users.append(User(user_name2, self.start_life))
+        self.users.append([user_name1, user_name2])
+
+    # 빈땅이면 점령 자기땅이면 pass 상대방 땅이면 life - 1
+    def game_process(self, land_idx, idx):
+
+        if self.total_land[land_idx] == "":
+            self.total_land[land_idx] = self.users[2][idx]
+
+        elif self.total_land[land_idx] == self.users[2][idx]:
+            print("본인 땅입니다.")
+        elif self.total_land[land_idx] != self.users[2][idx]:
+            self.users[idx].life -= 1
+            print(self.users[idx].life)
+
 
     def game_over(self):
         temp_list = []
@@ -73,21 +89,3 @@ class Game:
         # 결과가 나왔을 때
         print("\n{0}님이 승리하셨습니다!\n".format(winner))
 
-    def start(self):
-        print("랜덤 다이스에 오신것을 환영합니다~!. 게임을 시작하겠습니다.")
-
-        # input(persons map_size start_life)
-        # ex) 2 17 3
-        input_result = input("인원 수, 목숨을 입력해주세요\nex)2 3\n")
-        input_list = input_result.split(" ")
-
-        # Game(persons, start_life)
-        self.persons = int(input_list[0])
-        self.start_life = int(input_list[1])
-
-        self.input_name()
-
-    def input_name(self, user_name1, user_name2):
-        # User 닉네임 입력
-        self.users.append(User(user_name1, self.start_life))
-        self.users.append(User(user_name2, self.start_life))

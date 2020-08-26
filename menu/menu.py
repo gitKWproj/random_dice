@@ -1,4 +1,4 @@
-from mymodify.dice.game import Game
+from dice.game import Game
 from random import randint
 
 
