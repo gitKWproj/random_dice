@@ -89,5 +89,5 @@ class Game:
 
     def input_name(self, user_name1, user_name2):
         # User 닉네임 입력
-        self.users.append(User(user_name1, self.start_life))
-        self.users.append(User(user_name2, self.start_life))
+        self.users.append(User(user_name1, self.start_life, self.land[0][0][0], self.land[0][0][1]))
+        self.users.append(User(user_name2, self.start_life, self.land[1][0][0], self.land[1][0][1]))

@@ -2,10 +2,13 @@ from random import randint
 
 
 class User:
-    def __init__(self, name, life):
+    def __init__(self, name, life, x, y):
         self.name = name
         self.life = life
         self.land_idx = 0
+        self.virtual_x = x
+        self.virtual_y = y
+        self.virtual_idx = 0
 
 # 주사위 버튼 시 메서드( game 변수목록 클래스, 회차 cnt, 1번째 2번째 유저 구분여부 idx)
     def dice(self, game, count, idx):
@@ -13,6 +16,7 @@ class User:
         result = randint(1, 6)
         print(result)
 # 땅 위치 값 계산 후 이동
+        self.virual_idx = self.land_idx
         self.land_idx += result
 # 한바퀴 돌았을 시 idx값 조정
         if self.land_idx > 17:
