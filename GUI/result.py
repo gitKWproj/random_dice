@@ -17,7 +17,8 @@ class ResultScreen(QDialog):
 
         btn1 = QPushButton("처음으로", self)
         btn1.setGeometry(100, 350, 100, 30)
-        # btn1.clicked.connect(self.pushButton1)
+        btn1.clicked.connect(self.pushButton1)
+        # btn1.setEnabled(False)
 
         btn2 = QPushButton("나가기", self)
         btn2.setGeometry(300, 350, 100, 30)
@@ -28,8 +29,10 @@ class ResultScreen(QDialog):
     #     fw.exec_()
     def pushButton2(self):
         self.close()
+
+
 if __name__ == '__main__':
     app = QApplication(sys.argv)
     screen = ResultScreen()
     screen.show()
-    sys.exit(app.exec_())
+    app.exec_()

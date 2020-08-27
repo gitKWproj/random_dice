@@ -6,20 +6,21 @@ class User:
         self.name = name
         self.life = life
         self.land_idx = 0
+        self.result = 0
 
 # 주사위 버튼 시 메서드( game 변수목록 클래스, 회차 cnt, 1번째 2번째 유저 구분여부 idx)
     def dice(self, game, count, idx):
 # 주사위 돌리기
-        result = randint(1, 6)
+        self.result = randint(1, 6)
         # print(result)
 # 땅 위치 값 계산 후 이동
-        self.land_idx += result
+        self.land_idx += self.result
 # 한바퀴 돌았을 시 idx값 조정, life +1
         if self.land_idx > 17:
             self.land_idx -= len(game.land[idx])
             self.life += 1
-# 주사위 값 반환
-        return result
+# 주사위 값 반환, 객체 변수로 만들어서 Game 클래스에서 주사위 값 사용
+        return self.result
 '''
     # 주사위 돌리기
     def dice(self, game, count):

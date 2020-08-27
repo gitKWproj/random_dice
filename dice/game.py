@@ -12,6 +12,8 @@ class Game:
         self.total_land = []
         for i in range(self.map_size):
             self.total_land.append("")
+        self.main_text = ""
+        self.users_text = ""
         #users[0] 과 users[1] 의 이미지 위치값
         self.land = [
             [(610, 470, 40, 40), (510, 470, 40, 40), (410, 470, 40, 40), (310, 470, 40, 40), (210, 470, 40, 40),
@@ -36,56 +38,62 @@ class Game:
 
     # 빈땅이면 점령 자기땅이면 pass 상대방 땅이면 life - 1
     def game_process(self, land_idx, idx):
-
+        # main_text와 users_text 데이터 설정
         if self.total_land[land_idx] == "":
             self.total_land[land_idx] = self.users[2][idx]
-
+            self.main_text = "{}의 주사위 {} !!!".format(self.users[2][idx], self.users[idx].result)
+            self.users_text = "{}만큼 이동!! 현재 위치는 land[{}]입니다. \n남은 생명력 {}".format(
+                self.users[idx].result, self.users[idx].land_idx, self.users[idx].life)
         elif self.total_land[land_idx] == self.users[2][idx]:
-            print("본인 땅입니다.")
+            self.main_text = "{}의 주사위 {} !!!".format(self.users[2][idx], self.users[idx].result)
+            self.users_text = "{}만큼 이동!! 현재 위치는 land[{}] 본인 땅입니다. \n남은 생명력 {}".format(
+                self.users[idx].result, self.users[idx].land_idx, self.users[idx].life)
         elif self.total_land[land_idx] != self.users[2][idx]:
             self.users[idx].life -= 1
-            print(self.users[idx].life)
+            self.main_text = "{}의 주사위 {} !!!".format(self.users[2][idx], self.users[idx].result)
+            self.users_text = "{}만큼 이동!! 현재 위치는 land[{}] 상대방의 땅입니다. 생명력 -1\n남은 생명력 {}".format(
+                self.users[idx].result, self.users[idx].land_idx, self.users[idx].life)
 
 
-    def game_over(self):
-        temp_list = []
-        land_set = set(self.land)
-
-        print("\n")
-
-        for i in land_set:
-            temp_list.append([i, self.land.count(i)])
-
-        for i in range(len(temp_list)):
-            if temp_list[i][0] == "":
-                print("미점령된 땅의 개수 - {0}".format(temp_list[i][1]))
-            else:
-                print("{0}님의 땅의 개수 - {1}".format(temp_list[i][0], temp_list[i][1]))
-
-        # 변수에 승자 땅 갯수, 승자명 담기
-        land_count = 0
-        winner = ""
-        for i in land_set:
-            if i == "": continue
-
-            # 처음일 때,
-            if land_count == 0:
-                winner = i
-                land_count = self.land.count(i)
-                continue
-
-            # 땅의 갯수가 같을때
-            if land_count == self.land.count(i):
-                winner = winner + ",{}".format(i)
-            # 땅의 갯수가 더 많을때
-            elif land_count < self.land.count(i):
-                winner = i
-                land_count = self.land.count(i)
-
-        # 비겼을 때
-        if winner.find(",") != -1:
-            print("\n비겼습니다!\n")
-            return
-        # 결과가 나왔을 때
-        print("\n{0}님이 승리하셨습니다!\n".format(winner))
+    # def game_over(self):
+    #     temp_list = []
+    #     land_set = set(self.land)
+    #
+    #     print("\n")
+    #
+    #     for i in land_set:
+    #         temp_list.append([i, self.land.count(i)])
+    #
+    #     for i in range(len(temp_list)):
+    #         if temp_list[i][0] == "":
+    #             print("미점령된 땅의 개수 - {0}".format(temp_list[i][1]))
+    #         else:
+    #             print("{0}님의 땅의 개수 - {1}".format(temp_list[i][0], temp_list[i][1]))
+    #
+    #     # 변수에 승자 땅 갯수, 승자명 담기
+    #     land_count = 0
+    #     winner = ""
+    #     for i in land_set:
+    #         if i == "": continue
+    #
+    #         # 처음일 때,
+    #         if land_count == 0:
+    #             winner = i
+    #             land_count = self.land.count(i)
+    #             continue
+    #
+    #         # 땅의 갯수가 같을때
+    #         if land_count == self.land.count(i):
+    #             winner = winner + ",{}".format(i)
+    #         # 땅의 갯수가 더 많을때
+    #         elif land_count < self.land.count(i):
+    #             winner = i
+    #             land_count = self.land.count(i)
+    #
+    #     # 비겼을 때
+    #     if winner.find(",") != -1:
+    #         print("\n비겼습니다!\n")
+    #         return
+    #     # 결과가 나왔을 때
+    #     print("\n{0}님이 승리하셨습니다!\n".format(winner))
 
