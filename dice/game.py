@@ -14,6 +14,8 @@ class Game:
             self.total_land.append("")
         self.main_text = ""
         self.users_text = ""
+        # 본인 땅과 남의 땅을 구별해주는 변수 empty
+        self.empty = False
         #users[0] 과 users[1] 의 이미지 위치값
         self.land = [
             [(610, 470, 40, 40), (510, 470, 40, 40), (410, 470, 40, 40), (310, 470, 40, 40), (210, 470, 40, 40),
@@ -30,6 +32,7 @@ class Game:
         ]
 
 
+
     def input_name(self, user_name1, user_name2):
         # User 닉네임 입력
         self.users.append(User(user_name1, self.start_life))
@@ -38,22 +41,32 @@ class Game:
 
     # 빈땅이면 점령 자기땅이면 pass 상대방 땅이면 life - 1
     def game_process(self, land_idx, idx):
-        # main_text와 users_text 데이터 설정
-        if self.total_land[land_idx] == "":
+        # main_text와 users_text 데이터 설정, 빈 땅일때, land_idx 가 0이 아닐때만
+        if self.total_land[land_idx] == "" and land_idx != 0:
+            # 빈땅이면 True
+            self.empty = True
             self.total_land[land_idx] = self.users[2][idx]
             self.main_text = "{}의 주사위 {} !!!".format(self.users[2][idx], self.users[idx].result)
-            self.users_text = "{}만큼 이동!! 현재 위치는 land[{}]입니다. \n남은 생명력 {}".format(
-                self.users[idx].result, self.users[idx].land_idx, self.users[idx].life)
-        elif self.total_land[land_idx] == self.users[2][idx]:
+            self.users_text = "{}만큼 이동!! 현재 위치는 land[{}]입니다. \n{} 남은 생명력 {}".format(
+                self.users[idx].result, self.users[idx].land_idx, self.users[idx].users_text, self.users[idx].life)
+        # 자기 땅일 때
+        elif self.total_land[land_idx] == self.users[2][idx] and land_idx != 0:
             self.main_text = "{}의 주사위 {} !!!".format(self.users[2][idx], self.users[idx].result)
-            self.users_text = "{}만큼 이동!! 현재 위치는 land[{}] 본인 땅입니다. \n남은 생명력 {}".format(
-                self.users[idx].result, self.users[idx].land_idx, self.users[idx].life)
-        elif self.total_land[land_idx] != self.users[2][idx]:
+            self.users_text = "{}만큼 이동!! 현재 위치는 land[{}] 본인 땅입니다. \n{} 남은 생명력 {}".format(
+                self.users[idx].result, self.users[idx].land_idx, self.users[idx].users_text, self.users[idx].life)
+        # 남의 땅일 때
+        elif self.total_land[land_idx] != self.users[2][idx] and land_idx != 0:
+            # 남의 땅이면 False
+            self.empty = False
             self.users[idx].life -= 1
             self.main_text = "{}의 주사위 {} !!!".format(self.users[2][idx], self.users[idx].result)
-            self.users_text = "{}만큼 이동!! 현재 위치는 land[{}] 상대방의 땅입니다. 생명력 -1\n남은 생명력 {}".format(
+            self.users_text = "{}만큼 이동!! 현재 위치는 land[{}] 상대방의 땅입니다. 생명력 -1\n{} 남은 생명력 {}".format(
+                self.users[idx].result, self.users[idx].land_idx, self.users[idx].users_text, self.users[idx].life)
+        # 시작 지점일 때
+        elif land_idx == 0:
+            self.main_text = "{}의 주사위 {} !!!".format(self.users[2][idx], self.users[idx].result)
+            self.users_text =  "{}만큼 이동!! 현재 위치는 land[{}] 시작지점입니다. \n생명력 +1 남은 생명력 {}".format(
                 self.users[idx].result, self.users[idx].land_idx, self.users[idx].life)
-
 
     # def game_over(self):
     #     temp_list = []

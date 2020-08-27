@@ -1,5 +1,5 @@
 from random import randint
-
+from GUI.result import ResultScreen
 
 class User:
     def __init__(self, name, life):
@@ -7,6 +7,7 @@ class User:
         self.life = life
         self.land_idx = 0
         self.result = 0
+        self.users_text = ""
 
 # 주사위 버튼 시 메서드( game 변수목록 클래스, 회차 cnt, 1번째 2번째 유저 구분여부 idx)
     def dice(self, game, count, idx):
@@ -19,6 +20,10 @@ class User:
         if self.land_idx > 17:
             self.land_idx -= len(game.land[idx])
             self.life += 1
+            self.users_text = "한바퀴가 지났습니다. 생명력 +1 !!"
+        # 한바퀴 돌고 두번째 이후  text를 비운다.
+        else :
+            self.users_text = ""
 # 주사위 값 반환, 객체 변수로 만들어서 Game 클래스에서 주사위 값 사용
         return self.result
 '''
