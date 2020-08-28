@@ -11,6 +11,9 @@ CalUI = '../_guiFiles/frame_test2.ui'
 
 
 class MainDialog(QDialog, QWidget):
+    from test import Bigtext
+    big = Bigtext(0)
+    ending_text = big.show_text()
     def __init__(self, game):
         # 게임 화면
         # ui 파일 불러오기 및 gui
@@ -23,6 +26,7 @@ class MainDialog(QDialog, QWidget):
         self.count = 0
         self.game = game
         self.last_text = ""
+
 
     def setupUI(self):
 
@@ -83,13 +87,13 @@ class MainDialog(QDialog, QWidget):
 
         # users의 life가 0이 되었을 때 dice 버튼 비활성화, last_text 출력, QMessageBox 이벤트 발생
         if self.game.users[idx].life == 0:
-            self.last_text = "{}님 땅을 {}개 점령하셨지만 패배하였습니다..".format(self.game.users[idx].name,
+            self.last_text = "{}님 땅을 {}개 점령하셨지만 패배하였습니다.. \n 너가 아이스크림 쏘세요".format(self.game.users[idx].name,
                                                                   self.game.total_land.count(self.game.users[idx].name))
             self.main_text.setPlainText(self.last_text)
             self.btn1.setEnabled(False)
 
             # last_text를 전달해서 창에 띄운다.
-            self.result_event(self.last_text)
+            self.result_event(self.last_text, self.ending_text)
             # QMessageBox.about(self, "결과", self.last_text)
 
     # num = 해당유저의 땅번호, color = 해당유저의 고유 색깔
@@ -130,17 +134,19 @@ class MainDialog(QDialog, QWidget):
             self.land_17.setStyleSheet("background: {}".format(color))
 
     # QMessageBox 실행
-    def result_event(self, text):
-        reAlert = QMessageBox.question(self, '결과', "{} \n 너가 졌으니깐 쏴".format(text), QMessageBox.Yes | QMessageBox.Cancel)
+    def result_event(self, last_text, ending_text):
+        reAlert = QMessageBox.question(self, '결과', "{0} \n{1}".format(ending_text, last_text), QMessageBox.Yes | QMessageBox.Cancel)
 
 
         if reAlert == QMessageBox.Yes:
-            from GUI.setting import SettingBase
-            self.close()
-            set = SettingBase()
-            set.exec_()
+            import webbrowser
+            url = "http://www.baskinrobbins.co.kr/menu/list.php?top=A"
+            webbrowser.open_new(url)
         elif reAlert == QMessageBox.Cancel:
-            self.close()
+            from GUI.setting import SettingBase
+            dlg = SettingBase()
+            dlg.exec_()
+
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)

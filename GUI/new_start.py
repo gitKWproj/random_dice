@@ -1,7 +1,7 @@
 import sys
 from PyQt5.QtWidgets import *
 from GUI.setting import SettingBase
-
+# from GUI.result import ResultScreen
 
 # 첫번째 화면 시작하기, 선택하면 두번째 화면 실행
 class FirstWindow(QMainWindow):
@@ -32,8 +32,9 @@ class FirstWindow(QMainWindow):
         set.exec_()
 
     def pushButton2(self):
-        pass
-
+        from GUI.result import ResultScreen
+        rs = ResultScreen()
+        rs.exec_()
     def pushButton3(self):
         self.close()
 
