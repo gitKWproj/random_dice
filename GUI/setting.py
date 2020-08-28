@@ -39,7 +39,7 @@ class SettingBase(QDialog):
 
         self.setLayout(layout)
 
-# '등록' 버튼 클릭 이벤트
+# '등록' 버튼 클릭 이벤트a
     def pushButtonClicked(self):
         self.game.start_life = self.lineEdit3.text()
         self.game.input_name(self.lineEdit1.text(), self.lineEdit2.text())
