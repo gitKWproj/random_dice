@@ -142,7 +142,9 @@ class MainDialog(QDialog, QWidget):
             import webbrowser
             url = "http://www.baskinrobbins.co.kr/menu/list.php?top=A"
             webbrowser.open_new(url)
+            self.close()
         elif reAlert == QMessageBox.Cancel:
+            self.close()
             from GUI.setting import SettingBase
             dlg = SettingBase()
             dlg.exec_()
