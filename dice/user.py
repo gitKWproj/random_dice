@@ -8,6 +8,8 @@ class User:
         self.land_idx = 0
         self.result = 0
         self.users_text = ""
+        self.countdown = []
+        self.countdown2 = []
 
 # 주사위 버튼 시 메서드( game 변수목록 클래스, 회차 cnt, 1번째 2번째 유저 구분여부 idx)
     def dice(self, game, count, idx):

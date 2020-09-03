@@ -2,6 +2,7 @@ import sys
 from PyQt5.QtWidgets import *
 from GUI.play import MainDialog
 from dice.game import Game
+from PyQt5.QtGui import QIcon
 
 
 # 두번째 윈도우창 인원 수, 생명 설정창.
@@ -18,6 +19,8 @@ class SettingBase(QDialog):
         self.setFixedSize(400, 300)
         self.setGeometry(1110, 500, 400, 300)
         self.setWindowTitle("설정")
+        self.setWindowIcon(QIcon('../_image/dice_roll.gif'))
+
 
 
         label1 = QLabel("플레이어 1: ")

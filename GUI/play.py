@@ -3,6 +3,7 @@ import sys
 from PyQt5.QtWidgets import *
 from PyQt5 import uic
 from dice.game import Game
+from PyQt5.QtGui import QIcon
 
 
 
@@ -11,9 +12,10 @@ CalUI = '../_guiFiles/frame_test2.ui'
 
 
 class MainDialog(QDialog, QWidget):
-    from test import Bigtext
+    from test1 import Bigtext
     big = Bigtext(0)
     ending_text = big.show_text()
+    print(ending_text)
     def __init__(self, game):
         # 게임 화면
         # ui 파일 불러오기 및 gui
@@ -34,6 +36,7 @@ class MainDialog(QDialog, QWidget):
         # self.main_text.setPlainText("{:^33}".format("랜덤 다이스 게임 시작!."))
         self.main_text.setPlainText(("랜덤 다이스 게임 시작!.").center(24, "*"))
         self.btn1.clicked.connect(self.dice)
+        self.setWindowIcon(QIcon('../_image/dice_roll.gif'))
 
     # User 클래스의 dice 함수를 호출해서 users[0] 과 users[1] 객체를 생성
     def dice(self):
@@ -44,7 +47,17 @@ class MainDialog(QDialog, QWidget):
         # 주사위 버튼 시 메서드( game 변수목록 클래스, 회차 cnt, 1번째 2번째 유저 구분여부 idx)
         result = self.game.users[idx].dice(self.game, self.count, idx)
 
-        if idx == 0:
+        # 무인도에 들어갔을때 실행
+        if len(self.game.users[idx].countdown) > 0:
+            if idx == 0:
+                self.game.specialplace1(self.game.users[idx].land_idx, idx)
+                self.player1_text.append(self.game.users_text)
+            # if 문으로 나눈 이유는 player_text를 각자 상황에 맞게 실행하기 위해 나눔
+            elif idx == 1:
+                self.game.specialplace1(self.game.users[idx].land_idx, idx)
+                self.player2_text.append(self.game.users_text)
+
+        elif idx == 0:
 
             ## 이미지 표시 ( 3차원 배열 )
             self.player1.setGeometry(self.game.land[idx][self.game.users[idx].land_idx][0],
@@ -53,10 +66,14 @@ class MainDialog(QDialog, QWidget):
                                      self.game.land[idx][self.game.users[idx].land_idx][3]
                                      )
 
+            # 특정 상태를 비교하여 specialplace에 기능 활성화
+            if len(self.game.users[idx].countdown2) == 1:
+                self.game.game_process2(self.game.users[idx].land_idx, idx)
+                # self.game.users[idx].countdown2.clear()
 
-            ## 땅이 비어있으면 점령, 남에 땅이면 life - 1
-            #  land_idx = self.game.users[idx].land_idx
-            self.game.game_process(self.game.users[idx].land_idx, idx)
+            else:
+                ## 땅이 비어있으면 점령, 남에 땅이면 life - 1
+                self.game.game_process(self.game.users[idx].land_idx, idx)
 
             # 빈땅이여서, True 일때만 색을 변경한다.
             if self.game.empty:                    # 해당 유저의 땅 번호, 고유색깔
@@ -75,7 +92,12 @@ class MainDialog(QDialog, QWidget):
                                      )
 
             ## 땅이 비어있으면 점령, 남에 땅이면 life - 1
-            self.game.game_process(self.game.users[idx].land_idx, idx)
+            ## 한번이라도 land_idx == 9 가 나오면 len(countdown2)은 1이 되고 그걸 다시초기화
+            if len(self.game.users[idx].countdown2) == 1:
+                self.game.game_process2(self.game.users[idx].land_idx, idx)
+
+            else:
+                self.game.game_process(self.game.users[idx].land_idx, idx)
 
             # 빈땅이여서, True 일때만 색을 변경한다.
             if self.game.empty:                    # 해당 유저의 땅 번호, 고유색깔
@@ -135,7 +157,7 @@ class MainDialog(QDialog, QWidget):
 
     # QMessageBox 실행
     def result_event(self, last_text, ending_text):
-        reAlert = QMessageBox.question(self, '결과', "{0} \n{1}".format(ending_text, last_text), QMessageBox.Yes | QMessageBox.Cancel)
+        reAlert = QMessageBox.question(self, '결과', "{0}".format(ending_text), QMessageBox.Yes | QMessageBox.Cancel)
 
 
         if reAlert == QMessageBox.Yes:

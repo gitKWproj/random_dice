@@ -42,7 +42,30 @@ class Game:
     # 빈땅이면 점령 자기땅이면 pass 상대방 땅이면 life - 1
     def game_process(self, land_idx, idx):
         # main_text와 users_text 데이터 설정, 빈 땅일때, land_idx 가 0이 아닐때만
-        if self.total_land[land_idx] == "" and land_idx != 0:
+
+        if land_idx == 5:
+            self.empty = False
+            self.users[idx].countdown.append("무인도")
+            self.users_text = """
+        무인도에 도착했습니다
+        3턴동안 움직일수 없습니다
+        돛단배를 제작중...
+        """
+        # 폭풍 추가
+        elif land_idx == 9:
+            self.empty = False
+            self.main_text = "폭풍의 지역입니다."
+            self.users_text = """
+        폭풍을 만났습니다
+        어디론가 날아갑니다
+        (다음턴에 임의에 land로 이동합니다)
+        """
+            self.users[idx].land_idx = randint(1, 17)
+            self.users[idx].countdown2.append("조난중")
+
+
+        # 아무도 소유하지 않을 땅일때
+        elif self.total_land[land_idx] == "" and land_idx != 0:
             # 빈땅이면 True
             self.empty = True
             self.total_land[land_idx] = self.users[2][idx]
@@ -68,45 +91,75 @@ class Game:
             self.users_text =  "{}만큼 이동!! 현재 위치는 land[{}] 시작지점입니다. \n생명력 +1 남은 생명력 {}".format(
                 self.users[idx].result, self.users[idx].land_idx, self.users[idx].life)
 
-    # def game_over(self):
-    #     temp_list = []
-    #     land_set = set(self.land)
-    #
-    #     print("\n")
-    #
-    #     for i in land_set:
-    #         temp_list.append([i, self.land.count(i)])
-    #
-    #     for i in range(len(temp_list)):
-    #         if temp_list[i][0] == "":
-    #             print("미점령된 땅의 개수 - {0}".format(temp_list[i][1]))
-    #         else:
-    #             print("{0}님의 땅의 개수 - {1}".format(temp_list[i][0], temp_list[i][1]))
-    #
-    #     # 변수에 승자 땅 갯수, 승자명 담기
-    #     land_count = 0
-    #     winner = ""
-    #     for i in land_set:
-    #         if i == "": continue
-    #
-    #         # 처음일 때,
-    #         if land_count == 0:
-    #             winner = i
-    #             land_count = self.land.count(i)
-    #             continue
-    #
-    #         # 땅의 갯수가 같을때
-    #         if land_count == self.land.count(i):
-    #             winner = winner + ",{}".format(i)
-    #         # 땅의 갯수가 더 많을때
-    #         elif land_count < self.land.count(i):
-    #             winner = i
-    #             land_count = self.land.count(i)
-    #
-    #     # 비겼을 때
-    #     if winner.find(",") != -1:
-    #         print("\n비겼습니다!\n")
-    #         return
-    #     # 결과가 나왔을 때
-    #     print("\n{0}님이 승리하셨습니다!\n".format(winner))
+        # 폭풍으로 이동후 상황에 맞는 player_text를 반환 하기 위한 함수 및 이동후에 같은 기능 활성화
+        # land_idx == 9 일 때, 단 한번 실행함
+    def game_process2(self, land_idx, idx):
+        # 이 함수를 실행시키면 countdown2 리스트를 비운다.
+        self.users[idx].countdown2.clear()
+        self.main_text = "임의 장소로 이동중..."
+        if land_idx == 5:
+            self.empty = False
+            self.users[idx].countdown.append("무인도")
+            self.users_text = """눈을 떠보니
+        무인도에 도착했습니다
+        3턴동안 움직일수 없습니다
+        돛단배를 제작중...
+        """
+
+        elif land_idx == 9:
+            self.empty = False
+            self.users_text = """ 
+        다시한번 폭풍을 만났습니다
+        어디론가 날아갑니다
+        (다음턴에 임의에 land로 이동합니다)
+        """
+            self.users[idx].land_idx = randint(1, 17)
+            self.users[idx].countdown2.append("조난중")
+
+        elif self.total_land[land_idx] == "" and land_idx != 0:
+            # 빈땅이면 True
+            self.empty = True
+            # 현재땅의 위치에  유저 name 값을 구분하여 삽입
+            self.total_land[land_idx] = self.users[2][idx]
+            self.users_text = "눈을떠보니 현재 위치는 land[{}]입니다. \n{} 남은 생명력 {}".format(
+                self.users[idx].land_idx, self.users[idx].users_text, self.users[idx].life)
+            # 자기 땅일 때
+        elif self.total_land[land_idx] == self.users[2][idx] and land_idx != 0:
+            self.users_text = "눈을떠보니 현재 위치는 land[{}] 본인 땅입니다. \n{} 남은 생명력 {}".format(
+                self.users[idx].land_idx, self.users[idx].users_text, self.users[idx].life)
+            # 남의 땅일 때
+        elif self.total_land[land_idx] != self.users[2][idx] and land_idx != 0:
+            # 남의 땅이면 False
+            self.empty = False
+            self.users[idx].life -= 1
+            self.users_text = "눈을떠보니 현재 위치는 land[{}] 상대방의 땅입니다. \n{} 남은 생명력 {}".format(
+                self.users[idx].land_idx, self.users[idx].users_text, self.users[idx].life)
+            # 시작 지점일 때
+        elif land_idx == 0:
+            self.users_text = "눈을떠보니 현재 위치는 land[{}] 시작지점입니다. \n생명력 +1 남은 생명력 {}".format(
+                self.users[idx].land_idx, self.users[idx].life)
+
+            # 무인도 실행
+    def specialplace1(self, land_idx, idx):
+        self.users[idx].countdown.append("무인도")
+        if len(self.users[idx].countdown) == 2:
+            self.users_text = """
+        2턴 남았습니다
+        돛단배를 제작중...
+        """
+
+        if len(self.users[idx].countdown) == 3:
+            self.users_text = """
+        1턴 남았습니다
+        돛단배를 제작중...
+        """
+        if len(self.users[idx].countdown) == 4:
+            self.users_text = """
+        돛단배 완성!
+        돛단배를 타고 탈출합니다
+        다음턴부터 이동하세요
+        """
+            self.users[idx].land_idx = 5
+            self.users[idx].countdown.clear()
+
 

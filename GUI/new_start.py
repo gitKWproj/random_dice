@@ -1,6 +1,7 @@
 import sys
 from PyQt5.QtWidgets import *
 from GUI.setting import SettingBase
+from PyQt5.QtGui import QIcon
 # from GUI.result import ResultScreen
 
 # 첫번째 화면 시작하기, 선택하면 두번째 화면 실행
@@ -23,6 +24,7 @@ class FirstWindow(QMainWindow):
         btn3.clicked.connect(self.pushButton3)
 
         self.setWindowTitle("Random Dice")
+        self.setWindowIcon(QIcon('../_image/dice_roll.gif'))
         self.setGeometry(700, 500, 400, 300)
         self.setFixedSize(400, 300)
 
