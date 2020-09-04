@@ -1,7 +1,8 @@
 import sys
 from PyQt5.QtWidgets import *
-from mymodify.dice.game import Game
-from mymodify.GUI.play import MainDialog
+from GUI.play import MainDialog
+from dice.game import Game
+from PyQt5.QtGui import QIcon
 
 # 두번째 윈도우창 인원 수, 생명 설정창.
 
@@ -17,6 +18,7 @@ class SettingBase(QDialog):
         self.setFixedSize(400, 300)
         self.setGeometry(1110, 500, 400, 300)
         self.setWindowTitle("설정")
+        self.setWindowIcon(QIcon('../_image/dice_roll.gif'))
 
         label1 = QLabel("플레이어 1: ")
         label2 = QLabel("플레이어 2: ")
@@ -41,8 +43,10 @@ class SettingBase(QDialog):
 
 # '등록' 버튼 클릭 이벤트a
     def pushButtonClicked(self):
-        self.game.start_life = self.lineEdit3.text()
+        # lineEdit으로 값을 받으면 str형태로 저장
+        self.game.start_life = int(self.lineEdit3.text())
         self.game.input_name(self.lineEdit1.text(), self.lineEdit2.text())
+        self.close()
         # play.py의 클래스 3번째 윈도우 - 게임화면 (game - 게임에 필요한 변수들의 객체)
         dlg = MainDialog(self.game)
         dlg.exec_()
