@@ -1,8 +1,8 @@
-from mymodify.menu.menu import Menu
 import sys
 from PyQt5.QtWidgets import *
 from PyQt5 import uic
 from random import randint
+from menu.menu import Menu
 
 CalUI = 'e:/random_dice/mymodify/_guiFiles/frame.ui'
 

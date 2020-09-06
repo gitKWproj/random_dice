@@ -1,5 +1,4 @@
 from dice.user import User
-from random import randint
 
 
 class Game:
@@ -30,11 +29,6 @@ class Game:
             (250, 110, 40, 40), (350, 110, 40, 40), (450, 110, 40, 40), (550, 110, 40, 40), (650, 110, 40, 40),
             (650, 210, 40, 40), (650, 310, 40, 40), (650, 410, 40, 40)]
         ]
-
-    # 선공 정하기 함수
-    def toss_coin(self):
-        result = randint(0, 1)
-        return result
 
     def input_name(self, user_name1, user_name2):
         # User 닉네임 입력
@@ -74,12 +68,12 @@ class Game:
             self.total_land[land_idx] = self.users[2][idx]
             self.main_text = "{}의 주사위 {} !!!".format(self.users[2][idx], self.users[idx].result)
             self.users_text = "{}만큼 이동!! 현재 위치는 land[{}]입니다. \n{} 남은 생명력 {}".format(
-                self.users[idx].result, self.users[idx].land_idx, self.users[idx].users_text, self.users[idx].life)
+                self.users[idx].result, self.users[idx].land_idx, self.users[idx].circle_text, self.users[idx].life)
         # 자기 땅일 때
         elif self.total_land[land_idx] == self.users[2][idx] and land_idx != 0:
             self.main_text = "{}의 주사위 {} !!!".format(self.users[2][idx], self.users[idx].result)
             self.users_text = "{}만큼 이동!! 현재 위치는 land[{}] 본인 땅입니다. \n{} 남은 생명력 {}".format(
-                self.users[idx].result, self.users[idx].land_idx, self.users[idx].users_text, self.users[idx].life)
+                self.users[idx].result, self.users[idx].land_idx, self.users[idx].circle_text, self.users[idx].life)
         # 남의 땅일 때
         elif self.total_land[land_idx] != self.users[2][idx] and land_idx != 0:
             # 남의 땅이면 False
@@ -87,7 +81,7 @@ class Game:
             self.users[idx].life -= 1
             self.main_text = "{}의 주사위 {} !!!".format(self.users[2][idx], self.users[idx].result)
             self.users_text = "{}만큼 이동!! 현재 위치는 land[{}] 상대방의 땅입니다. 생명력 -1\n{} 남은 생명력 {}".format(
-                self.users[idx].result, self.users[idx].land_idx, self.users[idx].users_text, self.users[idx].life)
+                self.users[idx].result, self.users[idx].land_idx, self.users[idx].circle_text, self.users[idx].life)
         # 시작 지점일 때
         elif land_idx == 0:
             self.main_text = "{}의 주사위 {} !!!".format(self.users[2][idx], self.users[idx].result)
@@ -125,25 +119,26 @@ class Game:
             # 현재땅의 위치에  유저 name 값을 구분하여 삽입
             self.total_land[land_idx] = self.users[2][idx]
             self.users_text = "눈을떠보니 현재 위치는 land[{}]입니다. \n{} 남은 생명력 {}".format(
-                self.users[idx].land_idx, self.users[idx].users_text, self.users[idx].life)
+                self.users[idx].land_idx, self.users[idx].circle_text, self.users[idx].life)
             # 자기 땅일 때
         elif self.total_land[land_idx] == self.users[2][idx] and land_idx != 0:
             self.users_text = "눈을떠보니 현재 위치는 land[{}] 본인 땅입니다. \n{} 남은 생명력 {}".format(
-                self.users[idx].land_idx, self.users[idx].users_text, self.users[idx].life)
+                self.users[idx].land_idx, self.users[idx].circle_text, self.users[idx].life)
             # 남의 땅일 때
         elif self.total_land[land_idx] != self.users[2][idx] and land_idx != 0:
             # 남의 땅이면 False
             self.empty = False
             self.users[idx].life -= 1
             self.users_text = "눈을떠보니 현재 위치는 land[{}] 상대방의 땅입니다. \n{} 남은 생명력 {}".format(
-                self.users[idx].land_idx, self.users[idx].users_text, self.users[idx].life)
+                self.users[idx].land_idx, self.users[idx].circle_text, self.users[idx].life)
             # 시작 지점일 때
         elif land_idx == 0:
             self.users_text = "눈을떠보니 현재 위치는 land[{}] 시작지점입니다. \n생명력 +1 남은 생명력 {}".format(
                 self.users[idx].land_idx, self.users[idx].life)
 
             # 무인도 실행
-    def specialplace1(self, land_idx, idx):
+
+    def specialplace1(self, idx):
         self.users[idx].countdown.append("무인도")
         if len(self.users[idx].countdown) == 2:
             self.users_text = """

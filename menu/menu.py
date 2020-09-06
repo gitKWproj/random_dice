@@ -1,5 +1,4 @@
 from dice.game import Game
-from random import randint
 
 
 class Menu:

@@ -3,7 +3,6 @@ from PyQt5.QtWidgets import *
 from PyQt5 import uic, QtGui
 from PyQt5.QtCore import *
 from PyQt5.QtGui import *
-from dice.game import Game
 
 # qtDesigner로 화면 구성
 CalUI = '../_guiFiles/frame_test2.ui'
@@ -13,7 +12,6 @@ class MainDialog(QDialog) :
     from test1 import Bigtext
     big = Bigtext(0)
     ending_text = big.show_text()
-    print(ending_text)
     def __init__(self, game):
 # 게임 화면
 # ui 파일 불러오기 및 gui
@@ -60,11 +58,11 @@ class MainDialog(QDialog) :
         # 무인도에 들어갔을때 실행
         if len(self.game.users[idx].countdown) > 0:
             if idx == 0:
-                self.game.specialplace1(self.game.users[idx].land_idx, idx)
+                self.game.specialplace1(idx)
                 self.player1_text.append(self.game.users_text)
             # if 문으로 나눈 이유는 player_text를 각자 상황에 맞게 실행하기 위해 나눔
             elif idx == 1:
-                self.game.specialplace1(self.game.users[idx].land_idx, idx)
+                self.game.specialplace1(idx)
                 self.player2_text.append(self.game.users_text)
 
         elif idx == 0:
