@@ -46,7 +46,6 @@ class Game:
             self.users_text = """
         무인도에 도착했습니다
         3턴동안 움직일수 없습니다
-        돛단배를 제작중...
         """
         # 폭풍 추가
         elif land_idx == 9:
@@ -100,7 +99,6 @@ class Game:
             self.users_text = """눈을 떠보니
         무인도에 도착했습니다
         3턴동안 움직일수 없습니다
-        돛단배를 제작중...
         """
 
         elif land_idx == 9:
@@ -143,13 +141,11 @@ class Game:
         if len(self.users[idx].countdown) == 2:
             self.users_text = """
         2턴 남았습니다
-        돛단배를 제작중...
         """
 
         if len(self.users[idx].countdown) == 3:
             self.users_text = """
         1턴 남았습니다
-        돛단배를 제작중...
         """
         if len(self.users[idx].countdown) == 4:
             self.users_text = """

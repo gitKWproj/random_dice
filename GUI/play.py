@@ -3,9 +3,11 @@ from PyQt5.QtWidgets import *
 from PyQt5 import uic, QtGui
 from PyQt5.QtCore import *
 from PyQt5.QtGui import *
+from GUI.rull import *
 
 # qtDesigner로 화면 구성
 CalUI = '../_guiFiles/frame_test2.ui'
+RullUI = '../_guiFiles.rull.ui'
 
 
 class MainDialog(QDialog) :
@@ -24,6 +26,8 @@ class MainDialog(QDialog) :
         self.count = 0
         self.game = game
         self.last_text = ""
+        self.rull_dialog = Rull_dialog
+
 
     def setupUI(self):
         # self.main_text 에는 27의 문자가 최대
@@ -31,8 +35,13 @@ class MainDialog(QDialog) :
         self.main_text.setPlainText(("랜덤 다이스 게임 시작!.").center(24, "*"))
         self.btn1.pressed.connect(self.dice_roll_on)
         self.btn1.clicked.connect(self.dice)
+        self.Rull.clicked.connect(self.rull_btn)
         self.movie = QMovie("../_image/dice_roll.gif")
         self.setWindowIcon(QIcon('../_image/dice_roll.gif'))
+
+    def rull_btn(self):
+        Rul = Rull_dialog()
+        Rul.exec_()
 
     # 버튼 눌린상태일때 주사위 돌아가는 모션( gif )
     def dice_roll_on(self):
@@ -53,7 +62,12 @@ class MainDialog(QDialog) :
         # 각 플레이어 이동 이미지 변경, 각 현재 땅 출력
         self.movie.stop()
         self.label_3.setPixmap(QtGui.QPixmap("../_image/%d.png" % result))
-        self.main_text.setPlainText("{}의 주사위 {} !!!".format(self.game.users[idx].name, result))
+
+        if len(self.game.users[idx].countdown) > 0:
+            self.main_text.setPlainText("돛단배 제작중..")
+        else:
+            self.main_text.setPlainText("{}의 주사위 {} !!!".format(self.game.users[idx].name, result))
+
 
         # 무인도에 들어갔을때 실행
         if len(self.game.users[idx].countdown) > 0:
@@ -67,7 +81,7 @@ class MainDialog(QDialog) :
 
         elif idx == 0:
             self.btn1.setEnabled(False)
-            self.player1.setPixmap(QtGui.QPixmap("../_image/player1_test.png"))
+            self.player1.setPixmap(QtGui.QPixmap("../_image/player1_move.png"))
             #self.player1_text.append("{}만큼 이동!! 현재 위치는 land[{}]입니다.".format(result, self.game.users[idx].land_idx))
 
             # 특정 상태를 비교하여 specialplace에 기능 활성화
@@ -81,7 +95,7 @@ class MainDialog(QDialog) :
 
             # 빈땅이여서, True 일때만 색을 변경한다.
             if self.game.empty:                    # 해당 유저의 땅 번호, 고유색깔
-                self.land_background_color(self.game.users[idx].land_idx, "red")
+                self.land_background_color(self.game.users[idx].land_idx, "blue")
             #  QTextBrowser인 main_text player1_text에 데이터 출력
             self.main_text.setPlainText(self.game.main_text)
             self.player1_text.append(self.game.users_text)
@@ -93,7 +107,7 @@ class MainDialog(QDialog) :
 
         elif idx == 1:
             self.btn1.setEnabled(False)
-            self.player2.setPixmap(QtGui.QPixmap("../_image/player2_test.png"))
+            self.player2.setPixmap(QtGui.QPixmap("../_image/player2_move.png"))
             #self.player2_text.append("{}만큼 이동!! 현재 위치는 land[{}]입니다.".format(result, self.game.users[idx].land_idx))
 
             ## 땅이 비어있으면 점령, 남에 땅이면 life - 1
@@ -106,7 +120,7 @@ class MainDialog(QDialog) :
 
             # 빈땅이여서, True 일때만 색을 변경한다.
             if self.game.empty:                    # 해당 유저의 땅 번호, 고유색깔
-                self.land_background_color(self.game.users[idx].land_idx, "blue")
+                self.land_background_color(self.game.users[idx].land_idx, "red")
             #  QTextBrowser인 main_text player2_text에 데이터 출력
             self.main_text.setPlainText(self.game.main_text)
             self.player2_text.append(self.game.users_text)
@@ -213,6 +227,10 @@ class MainDialog(QDialog) :
 
         else:
             self.update()
+
+    #버튼 클릭후 종료
+    def rull_close(self):
+        self.rulldialog.close()
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)
