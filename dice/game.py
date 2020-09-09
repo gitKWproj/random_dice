@@ -13,6 +13,7 @@ class Game:
             self.total_land.append("")
         self.main_text = ""
         self.users_text = ""
+        self.last_test = ""
         # 본인 땅과 남의 땅을 구별해주는 변수 empty
         self.empty = False
         #users[0] 과 users[1] 의 이미지 위치값

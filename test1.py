@@ -27,7 +27,7 @@ class Bigtext:
         bigS = Bigtext(4)
         bigE = Bigtext(5)
         for i in range(5):
-            text += "{}  {}  {}         {}  {}  {}  {}\n".format(bigY.get_line(i), bigO.get_line(i), bigU.get_line(i),
+            text += "{}\t{}\t{}\t\t{}\t{}\t{}\t{}\n".format(bigY.get_line(i), bigO.get_line(i), bigU.get_line(i),
                                                     bigL.get_line(i), bigO.get_line(i), bigS.get_line(i),
                                                     bigE.get_line(i))
         return text

@@ -1,17 +1,18 @@
 import sys
 from PyQt5.QtWidgets import *
 from PyQt5.QtCore import *
+from PyQt5.QtGui import *
 
-class Rull_dialog(QDialog):
+class Rule_dialog(QDialog):
     def __init__(self):
         super().__init__()
-        self.rull()
+        self.rule()
 
-    def rull(self):
+    def rule(self):
         # Ok버튼
         Okbtn = QPushButton("OK", self)
-        Okbtn.move(450, 565)
-        Okbtn.clicked.connect(self.rull_close)
+        # Okbtn.setGeometry(450, 565, 100, 100)
+        Okbtn.clicked.connect(self.rule_close)
 
         #Title
         labelTitle = QLabel('게임규칙')
@@ -70,21 +71,23 @@ class Rull_dialog(QDialog):
         layout.addWidget(labelContents7)
         layout.addWidget(labelContents8)
         layout.addWidget(labelContents9)
+        layout.addWidget(Okbtn)
 
         self.setLayout(layout)
 
-        self.setWindowTitle('Rull')
+        self.setWindowTitle('Rule')
+        self.setWindowIcon(QIcon('../_image/dice_roll.gif'))
         self.setWindowModality(Qt.ApplicationModal)
         self.resize(1000, 600)
         self.show()
 
     #버튼 클릭후 종료
-    def rull_close(self):
+    def rule_close(self):
         self.close()
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
-    Rul = Rull_dialog()
+    Rul = Rule_dialog()
     Rul.show()
     app.exec_()
 

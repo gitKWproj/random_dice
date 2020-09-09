@@ -1,13 +1,9 @@
-import sys
-from PyQt5.QtWidgets import *
 from PyQt5 import uic, QtGui
-from PyQt5.QtCore import *
-from PyQt5.QtGui import *
-from GUI.rull import *
+from GUI.rule import *
 
 # qtDesigner로 화면 구성
 CalUI = '../_guiFiles/frame_test2.ui'
-RullUI = '../_guiFiles.rull.ui'
+ruleUI = '../_guiFiles.rule.ui'
 
 
 class MainDialog(QDialog) :
@@ -26,7 +22,7 @@ class MainDialog(QDialog) :
         self.count = 0
         self.game = game
         self.last_text = ""
-        self.rull_dialog = Rull_dialog
+        self.rule_dialog = Rule_dialog
 
 
     def setupUI(self):
@@ -35,12 +31,12 @@ class MainDialog(QDialog) :
         self.main_text.setPlainText(("랜덤 다이스 게임 시작!.").center(24, "*"))
         self.btn1.pressed.connect(self.dice_roll_on)
         self.btn1.clicked.connect(self.dice)
-        self.Rull.clicked.connect(self.rull_btn)
+        self.rule.clicked.connect(self.rule_btn)
         self.movie = QMovie("../_image/dice_roll.gif")
         self.setWindowIcon(QIcon('../_image/dice_roll.gif'))
 
-    def rull_btn(self):
-        Rul = Rull_dialog()
+    def rule_btn(self):
+        Rul = Rule_dialog()
         Rul.exec_()
 
     # 버튼 눌린상태일때 주사위 돌아가는 모션( gif )
@@ -62,7 +58,7 @@ class MainDialog(QDialog) :
         # 각 플레이어 이동 이미지 변경, 각 현재 땅 출력
         self.movie.stop()
         self.label_3.setPixmap(QtGui.QPixmap("../_image/%d.png" % result))
-
+        # 무인도일때 메인 text
         if len(self.game.users[idx].countdown) > 0:
             self.main_text.setPlainText("돛단배 제작중..")
         else:
@@ -125,6 +121,8 @@ class MainDialog(QDialog) :
             self.main_text.setPlainText(self.game.main_text)
             self.player2_text.append(self.game.users_text)
 
+
+
             # 가상위치 - 이동 이미지 부드럽게 이동 timer
             self.timer = QTimer(self)
             self.timer.start(1 / 10000)
@@ -169,7 +167,7 @@ class MainDialog(QDialog) :
 
     # QMessageBox 실행
     def result_event(self, last_text, ending_text):
-        reAlert = QMessageBox.question(self, '결과', "{0}".format(ending_text), QMessageBox.Yes | QMessageBox.Cancel)
+        reAlert = QMessageBox.question(self, '결과', "{0}\n{1}".format(ending_text, last_text), QMessageBox.Yes | QMessageBox.Cancel)
 
         if reAlert == QMessageBox.Yes:
             import webbrowser
@@ -215,22 +213,24 @@ class MainDialog(QDialog) :
 
             # users의 life가 0이 되었을 때 dice 버튼 비활성화, last_text 출력, QMessageBox 이벤트 발생
             if self.game.users[idx].life == 0:
-                self.last_text = "{}님 땅을 {}개 점령하셨지만 패배하였습니다.. \n 너가 아이스크림 쏘세요".format(self.game.users[idx].name,
+                last_text = "{}님 땅을 {}개 점령하셨지만 패배하였습니다.. \n 너가 아이스크림 쏘세요".format(self.game.users[idx].name,
                                                                                       self.game.total_land.count(
                                                                                           self.game.users[idx].name))
-                self.main_text.setPlainText(self.last_text)
+                self.main_text.setPlainText(last_text)
                 self.btn1.setEnabled(False)
 
                 # last_text를 전달해서 창에 띄운다.
-                self.result_event(self.last_text, self.ending_text)
+                self.result_event(last_text, self.ending_text)
                 # QMessageBox.about(self, "결과", self.last_text)
 
         else:
             self.update()
 
+
+
     #버튼 클릭후 종료
-    def rull_close(self):
-        self.rulldialog.close()
+    def rule_close(self):
+        self.ruledialog.close()
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)

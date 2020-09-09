@@ -292,7 +292,7 @@
     </rect>
    </property>
   </widget>
-  <widget class="QPushButton" name="Rull">
+  <widget class="QPushButton" name="rule">
    <property name="geometry">
     <rect>
      <x>360</x>
@@ -302,7 +302,7 @@
     </rect>
    </property>
    <property name="text">
-    <string>Rull</string>
+    <string>Rule</string>
    </property>
   </widget>
   <widget class="QLabel" name="label_4">
@@ -318,7 +318,7 @@
     <string/>
    </property>
    <property name="pixmap">
-    <pixmap>../_image/무인도.jpeg</pixmap>
+    <pixmap>../_image/desert_island.jpeg</pixmap>
    </property>
    <property name="scaledContents">
     <bool>true</bool>
@@ -337,7 +337,7 @@
     <string/>
    </property>
    <property name="pixmap">
-    <pixmap>../_image/폭풍우.jpg</pixmap>
+    <pixmap>../_image/storm.jpg</pixmap>
    </property>
    <property name="scaledContents">
     <bool>true</bool>
@@ -356,7 +356,7 @@
     <string/>
    </property>
    <property name="pixmap">
-    <pixmap>../_image/배경화면.jpg</pixmap>
+    <pixmap>../_image/wallpapers.jpg</pixmap>
    </property>
    <property name="scaledContents">
     <bool>true</bool>
@@ -375,7 +375,7 @@
     <string/>
    </property>
    <property name="pixmap">
-    <pixmap>../_image/출발.jpg</pixmap>
+    <pixmap>../_image/start_line.jpg</pixmap>
    </property>
    <property name="scaledContents">
     <bool>true</bool>
@@ -409,7 +409,7 @@
   <zorder>player1</zorder>
   <zorder>player2</zorder>
   <zorder>main_text</zorder>
-  <zorder>Rull</zorder>
+  <zorder>rule</zorder>
  </widget>
  <resources>
   <include location="test.qrc"/>
